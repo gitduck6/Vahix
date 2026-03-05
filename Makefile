@@ -10,7 +10,7 @@ OBJS    := $(OBJDIR)/boot.o $(OBJDIR)/kernel.o
 KERNEL  := kernel.bin
 ISO     := VahidOS.iso
 
-.PHONY: all clean run iso
+.PHONY: all clean iso
 
 all: $(KERNEL)
 
@@ -29,9 +29,6 @@ $(KERNEL): $(OBJS) linker.ld
 iso: $(KERNEL)
 	cp $(KERNEL) iso/boot/kernel.bin
 	grub-mkrescue -o $(ISO) iso
-
-run: iso
-	qemu-system-i386 -cdrom $(ISO)
 
 clean:
 	rm -rf $(OBJDIR) $(KERNEL) $(ISO) iso/boot/kernel.bin
