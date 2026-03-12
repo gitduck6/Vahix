@@ -9,6 +9,10 @@ void new_line(void) {
     cursor += 80 - (cursor % 80);
 }
 
+void move_cursor(int direction) {
+    cursor += direction;
+}
+
 void clear(void) {
     for (size_t i = 0; i < 80 * 25; i++) {
         VGA_BUFFER[i] = (uint16_t)' ' | ((uint16_t)VGA_COLOR << 8);
