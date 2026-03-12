@@ -35,7 +35,7 @@ void print_string(const char *message) {
 }
 
 void kernel_main(void) {
-    for (;;) {
+    while (1) {
         __asm__ volatile ("hlt");
     }
 }
