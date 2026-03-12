@@ -7,7 +7,7 @@ size_t cursor = 0;
 
 void print(const char *msg) {
     for (size_t i = 0; msg[i] != '\0'; ++i) {
-        if (msg[i] == "\n"){
+        if (msg[i] == '\n'){
             cursor += 80 - (cursor % 80);
         }
         VGA_BUFFER[i] = (uint16_t)msg[i] | ((uint16_t)VGA_COLOR << 8);
