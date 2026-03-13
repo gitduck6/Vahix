@@ -3,6 +3,7 @@
 #include "string.h"
 #include "keyboard.h"
 #include "vga.h"
+#include "io.h"
 
 void execute_command(char *command){
     if (strcmp(command, "help") == 0) {
