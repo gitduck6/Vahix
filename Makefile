@@ -6,7 +6,7 @@ ASFLAGS := -ffreestanding
 LDFLAGS := -T linker.ld -ffreestanding -O2 -nostdlib
 
 OBJDIR  := build
-OBJS    := $(OBJDIR)/boot.o $(OBJDIR)/kernel.o
+OBJS    := $(OBJDIR)/boot.o $(OBJDIR)/keyboard.o $(OBJDIR)/kernel.o
 KERNEL  := kernel.bin
 ISO     := Vahix.iso
 
@@ -19,6 +19,9 @@ $(OBJDIR):
 
 $(OBJDIR)/boot.o: src/boot.s | $(OBJDIR)
 	$(AS) $(ASFLAGS) -c $< -o $@
+
+$(OBJDIR)/keyboard.o: src/keyboard.c | $(OBJDIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/kernel.o: src/kernel.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
