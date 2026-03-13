@@ -1,15 +1,16 @@
 CC      := i686-elf-gcc
 LD      := i686-elf-gcc
 AS      := i686-elf-gcc
-CFLAGS  := -std=gnu99 -ffreestanding -O2 -Wall -Wextra -MMD -MP
+CFLAGS  := -std=gnu99 -ffreestanding -O2 -Wall -Wextra -MMD -MP -Isrc/lib
 ASFLAGS := -ffreestanding
 LDFLAGS := -T linker.ld -ffreestanding -O2 -nostdlib
 
+SRCDIR  := src
 OBJDIR  := build
-SRC_C   := $(wildcard src/*.c)
-SRC_S   := $(wildcard src/*.s)
-OBJS    := $(patsubst src/%.c,$(OBJDIR)/%.o,$(SRC_C)) \
-	$(patsubst src/%.s,$(OBJDIR)/%.o,$(SRC_S))
+SRC_C   := $(shell find $(SRCDIR) -name '*.c')
+SRC_S   := $(shell find $(SRCDIR) -name '*.s')
+OBJS    := $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SRC_C)) \
+	$(patsubst $(SRCDIR)/%.s,$(OBJDIR)/%.o,$(SRC_S))
 DEPS    := $(OBJS:.o=.d)
 KERNEL  := kernel.bin
 ISO     := Vahix.iso
@@ -21,10 +22,12 @@ all: $(KERNEL)
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
-$(OBJDIR)/%.o: src/%.s | $(OBJDIR)
+$(OBJDIR)/%.o: $(SRCDIR)/%.s | $(OBJDIR)
+	mkdir -p $(dir $@)
 	$(AS) $(ASFLAGS) -c $< -o $@
 
-$(OBJDIR)/%.o: src/%.c | $(OBJDIR)
+$(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
+	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(KERNEL): $(OBJS) linker.ld
