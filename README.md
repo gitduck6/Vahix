@@ -1,6 +1,6 @@
-# VahidOS
+# Vahix
 
-VahidOS is an experimental kernel.
+Vahix is an experimental kernel.
 
 ## Build
 
@@ -10,5 +10,5 @@ Requirements:
 
 Commands:
 - `make` builds `kernel.bin`
-- `make iso` creates `VahidOS.iso`
+- `make iso` creates Vahix.iso`
 - `make clean` cleans binaries

@@ -8,7 +8,7 @@ LDFLAGS := -T linker.ld -ffreestanding -O2 -nostdlib
 OBJDIR  := build
 OBJS    := $(OBJDIR)/boot.o $(OBJDIR)/kernel.o
 KERNEL  := kernel.bin
-ISO     := VahidOS.iso
+ISO     := Vahix.iso
 
 .PHONY: all clean iso
 
