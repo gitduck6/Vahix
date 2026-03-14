@@ -18,7 +18,7 @@ void shell(void){
     char input_buffer[64];
     int index = 0;
     char c;
-    print_string("$ ");
+    print_string("\n$ ");
     while (running){
         if (keyboard_poll_char(&c)){
             if (c == '\n'){
