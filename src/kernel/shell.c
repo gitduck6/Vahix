@@ -28,8 +28,7 @@ void shell(void){
                 execute_command(input_buffer);
 
                 index = 0;
-                print_character('\n');
-                print_string("$ ");
+                print_string("\n$ ");
 
                 continue;
             } else if (c == '\b'){
