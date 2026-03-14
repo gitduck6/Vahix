@@ -31,7 +31,7 @@ void clear(void) {
 
 void print_character(const char character) {
     if (cursor >= 80 * 25) {
-        clear(); // Clear to not cause triple fault
+        clear();
         cursor = 0;
     }
     if (character == '\b') {
