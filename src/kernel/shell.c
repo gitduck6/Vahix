@@ -23,7 +23,7 @@ void shell(void){
     char input_buffer[64];
     int index = 0;
     char c;
-    print_string("\n$ ");
+    print_string("\n# ");
     while (running){
         if (keyboard_poll_char(&c)){
             if (c == '\n'){
@@ -33,7 +33,7 @@ void shell(void){
                 execute_command(input_buffer);
 
                 index = 0;
-                print_string("\n$ ");
+                print_string("\n# ");
 
                 continue;
             } else if (c == '\b'){
