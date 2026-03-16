@@ -1,7 +1,7 @@
 #include <drivers/vga.h>
 
 static volatile uint16_t *const VGA_BUFFER = (uint16_t *)0xB8000;
-static const uint8_t VGA_COLOR = 0x0F;
+static uint8_t VGA_COLOR = 0x0F;
 size_t cursor = 0;
 
 void update_hardware_cursor(void) {
@@ -21,6 +21,21 @@ void new_line(void) {
     move_cursor(VGA_WIDTH - (cursor % VGA_WIDTH));
 }
 
+void scroll(void) {
+    for (size_t i = 0; i < (VGA_HEIGHT - 1) * VGA_WIDTH; i++) {
+        VGA_BUFFER[i] = VGA_BUFFER[i + VGA_WIDTH];
+    }
+    for (size_t i = (VGA_HEIGHT - 1) * VGA_WIDTH; i < VGA_HEIGHT * VGA_WIDTH; i++) {
+        VGA_BUFFER[i] = (uint16_t)' ' | ((uint16_t)VGA_COLOR << 8);
+    }
+    cursor = (VGA_HEIGHT - 1) * VGA_WIDTH;
+    update_hardware_cursor();
+}
+
+void set_color(uint8_t fg, uint8_t bg) {
+    VGA_COLOR = fg | (bg << 4);
+}
+
 void clear(void) {
     for (size_t i = 0; i < VGA_WIDTH * VGA_HEIGHT; i++) {
         VGA_BUFFER[i] = (uint16_t)' ' | ((uint16_t)VGA_COLOR << 8);
@@ -31,8 +46,7 @@ void clear(void) {
 
 void print_character(const char character) {
     if (cursor >= VGA_WIDTH * VGA_HEIGHT) {
-        clear();
-        cursor = 0;
+        scroll();
     }
     if (character == '\b') {
         if (cursor > 0) {
