@@ -36,6 +36,10 @@ void set_color(uint8_t fg, uint8_t bg) {
     VGA_COLOR = fg | (bg << 4);
 }
 
+uint8_t get_color(void) {
+    return VGA_COLOR;
+}
+
 void clear(void) {
     for (size_t i = 0; i < VGA_WIDTH * VGA_HEIGHT; i++) {
         VGA_BUFFER[i] = (uint16_t)' ' | ((uint16_t)VGA_COLOR << 8);

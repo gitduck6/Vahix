@@ -2,7 +2,7 @@
 
 void execute_command(char *command){
     if (strcmp(command, "help") == 0) {
-        print_string("Commands: help, clear, echo, halt, reboot, cpuid, whoami, color\n");
+        print_string("Commands: help, clear, echo, halt, reboot, cpuid, whoami, color, peek\ndump, tetost");
     } else if (strcmp(command, "clear") == 0){
         clear();
     } else if (strncmp(command, "echo", 4) == 0){
@@ -55,6 +55,11 @@ void execute_command(char *command){
             print_character(' ');
             if (i == 7) print_string("| ");
         }
+    } else if (strcmp(command, "tetost") == 0){
+        uint8_t initial_color = get_color();
+        set_color(0x05, 0x00);
+        print_string("Tetost is a femboy!");
+        set_color(initial_color, 0x00);
     }
 }
 
