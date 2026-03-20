@@ -27,8 +27,6 @@ void execute_command(char *command){
         vendor[12] = '\0';
 
         print_string(vendor);
-    } else if (strcmp(command, "whoami") == 0) {
-        print_string("root");
     } else if (strncmp(command, "color", 5) == 0){
         if (strlen(command) > 5){
             char *color = command + 6;
