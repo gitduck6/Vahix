@@ -1,6 +1,6 @@
-#include <kernel/shell.h>
-#include <drivers/keyboard.h>
-#include <drivers/vga.h>
+#include "kernel/shell.h"
+#include "drivers/keyboard.h"
+#include "drivers/vga.h"
 
 void kernel_main(void) {
     keyboard_init();

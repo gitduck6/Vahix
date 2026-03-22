@@ -1,4 +1,4 @@
-#include <drivers/vga.h>
+#include "drivers/vga.h"
 
 static volatile uint16_t *const VGA_BUFFER = (uint16_t *)0xB8000;
 static uint8_t VGA_COLOR = 0x0F;
