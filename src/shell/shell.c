@@ -1,10 +1,10 @@
 #include "shell/shell.h"
 
 void execute_command(char *command){
-    if (strcmp(command, "help") == 0) 
+    if (strcmp(command, "help") == 0)
     {
         print_string("help\nclear\necho\nhalt\nreboot\ncpuid\ncolor\npeek\ndump\ntetost\ncursor");
-    } 
+    }
     else if (strcmp(command, "clear") == 0)
     {
         clear();
@@ -15,14 +15,14 @@ void execute_command(char *command){
         {
             print_string(command + 5);
         }
-    } 
+    }
     else if (strcmp(command, "halt") == 0)
     {
         while (1)
         {
             __asm__ volatile("cli; hlt");
         }
-    } 
+    }
     else if (strcmp(command, "reboot") == 0) 
     {
         uint8_t good = 0x02;
