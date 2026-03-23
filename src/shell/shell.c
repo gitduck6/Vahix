@@ -1,4 +1,4 @@
-#include "kernel/shell.h"
+#include "shell/shell.h"
 
 void execute_command(char *command){
     if (strcmp(command, "help") == 0) {
