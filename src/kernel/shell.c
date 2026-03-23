@@ -58,8 +58,9 @@ void execute_command(char *command){
         set_color(0x05, 0x00);
         print_string("Tetost is a femboy!");
         set_color(initial_color, 0x00);
-    } else if (strncmp(command, "cursor", 7) == 0) {
-        change_cursor(0xEF);
+    } else if (strncmp(command, "cursor ", 7) == 0) {
+        uint8_t cursor_value = string_to_hex(command + 7);
+        change_cursor(cursor_value);
     }
 }
 
