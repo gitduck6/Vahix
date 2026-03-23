@@ -86,6 +86,9 @@ void execute_command(char *command){
     {
         uint8_t cursor_value = string_to_hex(command + 7);
         change_cursor(cursor_value);
+    } else {
+        print_string(command);
+        print_string(": command not found");
     }
 }
 
