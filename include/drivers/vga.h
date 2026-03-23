@@ -7,6 +7,7 @@
 
 void new_line(void);
 void move_cursor(int direction);
+void set_cursor(int location);
 void clear(void);
 void print_character(const char character);
 void print_string(const char *string);

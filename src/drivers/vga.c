@@ -17,6 +17,11 @@ void move_cursor(int direction) {
     update_hardware_cursor();
 }
 
+void set_cursor(int location) {
+    cursor = location;
+    update_hardware_cursor();
+}
+
 void new_line(void) {
     move_cursor(VGA_WIDTH - (cursor % VGA_WIDTH));
 }
