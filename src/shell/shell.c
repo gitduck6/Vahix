@@ -29,7 +29,7 @@ void execute_command(char *command){
         while (good & 0x02)
             good = inb(0x64);
         outb(0x64, 0xFE);
-    } 
+    }
     else if (strcmp(command, "cpuid") == 0) 
     {
         uint32_t regs[4];
@@ -40,7 +40,7 @@ void execute_command(char *command){
         vendor[12] = '\0';
 
         print_string(vendor);
-    } 
+    }
     else if (strncmp(command, "color", 5) == 0)
     {
         if (strlen(command) > 5)
@@ -55,7 +55,7 @@ void execute_command(char *command){
             if (strcmp(color, "brown") == 0){set_color(0x06, 0x00);}
             if (strcmp(color, "white") == 0){set_color(0x0F, 0x00);}
         }
-    } 
+    }
     else if (strncmp(command, "peek ", 5) == 0) 
     {
         uint32_t addr = string_to_hex(command + 5);
