@@ -2,7 +2,7 @@
 
 void execute_command(char *command){
     if (strcmp(command, "help") == 0) {
-        print_string("Commands: help, clear, echo, halt, reboot, cpuid, color, peek\ndump, tetost");
+        print_string("Commands: help, clear, echo, halt, reboot, cpuid, color, peek\ndump, tetost, cursor");
     } else if (strcmp(command, "clear") == 0){
         clear();
     } else if (strncmp(command, "echo", 4) == 0){
@@ -53,11 +53,13 @@ void execute_command(char *command){
             print_character(' ');
             if (i == 7) print_string("| ");
         }
-    } else if (strcmp(command, "tetost") == 0){
+    } else if (strcmp(command, "tetost") == 0) {
         uint8_t initial_color = get_color();
         set_color(0x05, 0x00);
         print_string("Tetost is a femboy!");
         set_color(initial_color, 0x00);
+    } else if (strncmp(command, "cursor", 7) == 0) {
+        change_cursor(0xEF);
     }
 }
 
@@ -66,7 +68,6 @@ void shell(void){
     char input_buffer[64];
     int index = 0;
     char c;
-    change_cursor(0xef);
     print_string("Welcome to Vahix Shell!\n");
     print_string("To see available commands, type 'help'\n");
     print_string("# ");
