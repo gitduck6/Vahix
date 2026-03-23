@@ -74,7 +74,7 @@ void execute_command(char *command){
             print_character(' ');
             if (i == 7) print_string("| ");
         }
-    } 
+    }
     else if (strcmp(command, "tetost") == 0) 
     {
         uint8_t initial_color = get_color();
