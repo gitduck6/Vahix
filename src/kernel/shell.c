@@ -66,6 +66,7 @@ void shell(void){
     char input_buffer[64];
     int index = 0;
     char c;
+    change_cursor(0xef);
     print_string("Welcome to Vahix Shell!\n");
     print_string("To see available commands, type 'help'\n");
     print_string("# ");
