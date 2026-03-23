@@ -14,6 +14,7 @@ void print_string(const char *string);
 void scroll(void);
 void set_color(uint8_t fg, uint8_t bg);
 uint8_t get_color(void);
+void change_cursor(const char cursor);
 
 #define VGA_WIDTH 80
 #define VGA_HEIGHT 25

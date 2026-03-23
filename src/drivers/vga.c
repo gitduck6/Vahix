@@ -75,3 +75,20 @@ void print_string(const char *string) {
         print_character(string[i]);
     }
 }
+
+void change_cursor(const char cursor)
+{
+    char cursor_start, cursor_end;
+    cursor_start = cursor & 0x0F;
+    cursor_end = cursor >> 4;
+
+    // Register 0x0A: Cursor Start (and Enable/Disable bit)
+    outb(0x3D4, 0x0A);
+    // Bit 5 is the "Disable" bit. We force it to 0 to enable.
+    outb(0x3D5, (inb(0x3D5) & 0xC0) | cursor_start);
+
+    // Register 0x0B is the cursor's ending
+    outb(0x3D4, 0x0B);
+    outb(0x3D5, (inb(0x3D5) & 0xE0) | cursor_end);
+
+}

@@ -1,24 +1,37 @@
 #include "shell/shell.h"
 
 void execute_command(char *command){
-    if (strcmp(command, "help") == 0) {
-        print_string("Commands: help, clear, echo, halt, reboot, cpuid, color, peek\ndump, tetost");
-    } else if (strcmp(command, "clear") == 0){
+    if (strcmp(command, "help") == 0) 
+    {
+        print_string("Commands: help, clear, echo, halt, reboot, cpuid, color, peek\ndump, tetost, cursor");
+    } 
+    else if (strcmp(command, "clear") == 0)
+    {
         clear();
-    } else if (strncmp(command, "echo", 4) == 0){
-        if (strlen(command) > 4){
+    } 
+    else if (strncmp(command, "echo", 4) == 0)
+    {
+        if (strlen(command) > 4)
+        {
             print_string(command + 5);
         }
-    } else if (strcmp(command, "halt") == 0){
-        while (1){
+    } 
+    else if (strcmp(command, "halt") == 0)
+    {
+        while (1)
+        {
             __asm__ volatile("cli; hlt");
         }
-    } else if (strcmp(command, "reboot") == 0) {
+    } 
+    else if (strcmp(command, "reboot") == 0) 
+    {
         uint8_t good = 0x02;
         while (good & 0x02)
             good = inb(0x64);
         outb(0x64, 0xFE);
-    } else if (strcmp(command, "cpuid") == 0) {
+    } 
+    else if (strcmp(command, "cpuid") == 0) 
+    {
         uint32_t regs[4];
         __asm__ volatile("cpuid" : "=a"(regs[3]), "=b"(regs[0]), "=d"(regs[1]), "=c"(regs[2]) : "a"(0));
 
@@ -27,8 +40,11 @@ void execute_command(char *command){
         vendor[12] = '\0';
 
         print_string(vendor);
-    } else if (strncmp(command, "color", 5) == 0){
-        if (strlen(command) > 5){
+    } 
+    else if (strncmp(command, "color", 5) == 0)
+    {
+        if (strlen(command) > 5)
+        {
             char *color = command + 6;
             if (strcmp(color, "black") == 0){set_color(0x00, 0x00);}
             if (strcmp(color, "blue") == 0){set_color(0x01, 0x00);}
@@ -39,29 +55,42 @@ void execute_command(char *command){
             if (strcmp(color, "brown") == 0){set_color(0x06, 0x00);}
             if (strcmp(color, "white") == 0){set_color(0x0F, 0x00);}
         }
-    } else if (strncmp(command, "peek ", 5) == 0) {
+    } 
+    else if (strncmp(command, "peek ", 5) == 0) 
+    {
         uint32_t addr = string_to_hex(command + 5);
         uint8_t *ptr = (uint8_t*)addr;
         uint8_t value = *ptr;
         print_hex(value);
-    } else if (strncmp(command, "dump ", 5) == 0) {
+    } 
+    else if (strncmp(command, "dump ", 5) == 0) 
+    {
         uint32_t addr = string_to_hex(command + 5);
         uint8_t *ptr = (uint8_t*)addr;
 
-        for (int i = 0; i < 16; i++) {
+        for (int i = 0; i < 16; i++) 
+        {
             print_hex_byte(ptr[i]);
             print_character(' ');
             if (i == 7) print_string("| ");
         }
-    } else if (strcmp(command, "tetost") == 0){
+    } 
+    else if (strcmp(command, "tetost") == 0) 
+    {
         uint8_t initial_color = get_color();
         set_color(0x05, 0x00);
         print_string("Tetost is a femboy!");
         set_color(initial_color, 0x00);
+    } 
+    else if (strncmp(command, "cursor ", 7) == 0) 
+    {
+        uint8_t cursor_value = string_to_hex(command + 7);
+        change_cursor(cursor_value);
     }
 }
 
-void shell(void){
+void shell(void)
+{
     int running = 1; // I use 0 and 1 for false and true
     char input_buffer[64];
     int index = 0;
@@ -69,9 +98,12 @@ void shell(void){
     print_string("Welcome to Vahix Shell!\n");
     print_string("To see available commands, type 'help'\n");
     print_string("# ");
-    while (running){
-        if (keyboard_poll_char(&c)){
-            if (c == '\n'){
+    while (running)
+    {
+        if (keyboard_poll_char(&c))
+        {
+            if (c == '\n')
+            {
                 print_character('\n');
                 input_buffer[index] = '\0';
 
@@ -81,14 +113,20 @@ void shell(void){
                 print_string("\n# ");
 
                 continue;
-            } else if (c == '\b'){
-                if (index > 0){
+            } 
+            else if (c == '\b')
+            {
+                if (index > 0)
+                {
                     index--;
                     input_buffer[index] = '\0';
                     print_character('\b');
                 }
-            } else {
-                if (index < 63) { 
+            } 
+            else 
+            {
+                if (index < 63) 
+                { 
                     print_character(c);
                     input_buffer[index] = c;
                     index++;
