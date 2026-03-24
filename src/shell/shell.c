@@ -91,8 +91,8 @@ void execute_command(char *command){
         char *number = command + 6;
         uint64_t random_number = random();
         print_string(random_number);
-        if (random_number == number){
-            print_string("You won!");
+        if (random_number == number){ // Still broken, I'll fix this when I have time
+            print_string("You won!"); // Please don't test this on bare metal right now
         } else {
             print_string("You lost!");
         }
