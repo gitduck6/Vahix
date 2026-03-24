@@ -90,6 +90,7 @@ void execute_command(char *command){
     {
         char *number = command + 6;
         uint64_t random_number = random();
+        print_string(random_number);
         if (random_number == number){
             print_string("You won!");
         } else {
