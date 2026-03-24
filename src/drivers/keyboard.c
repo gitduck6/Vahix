@@ -6,12 +6,6 @@
 
 static bool shift_active = false;
 
-static inline uint8_t inb(uint16_t port) {
-    uint8_t value;
-    __asm__ volatile ("inb %1, %0" : "=a" (value) : "Nd" (port));
-    return value;
-}
-
 static const char BASE_MAP[128] = {
     [0x02] = '1', [0x03] = '2', [0x04] = '3', [0x05] = '4', [0x06] = '5',
     [0x07] = '6', [0x08] = '7', [0x09] = '8', [0x0A] = '9', [0x0B] = '0',

@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "kernel/io.h"
+
 void keyboard_init(void);
 int keyboard_poll_char(char *out);
 char keyboard_getchar(void);
