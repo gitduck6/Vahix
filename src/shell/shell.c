@@ -89,7 +89,12 @@ void execute_command(char *command){
     } else if (strncmp(command, "guess ", 6) == 0)
     {
         char *number = command + 6;
-        print_string(number);
+        uint64_t random_number = random();
+        if (random_number == number){
+            print_string("You won!");
+        } else {
+            print_string("You lost!");
+        }
     }
     else {
         print_string(command);
