@@ -86,7 +86,12 @@ void execute_command(char *command){
     {
         uint8_t cursor_value = string_to_hex(command + 7);
         change_cursor(cursor_value);
-    } else {
+    } else if (strncmp(command, "guess ", 6) == 0)
+    {
+        char *number = command + 6;
+        print_string(number);
+    }
+    else {
         print_string(command);
         print_string(": command not found");
     }
