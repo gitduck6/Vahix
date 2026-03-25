@@ -4,12 +4,6 @@
 #define KEYBOARD_STATUS_PORT 0x64
 #define KEYBOARD_STATUS_OUT_READY 0x01
 
-#define ARROW_KEY_UP 0x80
-#define ARROW_KEY_DOWN 0x81
-#define ARROW_KEY_LEFT 0x82
-#define ARROW_KEY_RIGHT 0x83
-
-
 static bool shift_active = false;
 static bool is_extended = false;
 
