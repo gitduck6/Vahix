@@ -7,4 +7,5 @@
 
 void keyboard_init(void);
 int keyboard_poll_char(char *out);
+char keyboard_raw_read();
 char keyboard_getchar(void);

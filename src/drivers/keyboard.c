@@ -56,8 +56,10 @@ static char translate_scancode(uint8_t scancode) {
     if (is_extended)
     {
         is_extended = false;
-        char c = (scancode < 128) ? EXTENDED_MAP[scancode] : 0;    
+        return (scancode < 128) ? EXTENDED_MAP[scancode] : 0;    
     }
+    if (scancode >= 128) return 0;
+
     const char *map = shift_active ? SHIFT_MAP : BASE_MAP; // Ternary operator LMAO
     return map[scancode];
 }
@@ -77,23 +79,22 @@ char keyboard_raw_read()
         return 0;
     }
 
-    uint8_t scancode = inb(KEYBOARD_DATA_PORT);
+    return inb(KEYBOARD_DATA_PORT);
 }
 
 int keyboard_poll_char(char *out) {
-    if (!(inb(KEYBOARD_STATUS_PORT) & KEYBOARD_STATUS_OUT_READY)) {
-        return 0;
-    }
 
-    uint8_t scancode = inb(KEYBOARD_DATA_PORT);
+    uint8_t scancode = keyboard_raw_read();
 
     if (scancode == 0xE0) {
         //This means that it is an extended scancode, (e.g. 0xE0 0x4B, double read for left arrow key)
         // so we basically read again with "Is extended"
         is_extended = true;
-        scancode = inb(KEYBOARD_DATA_PORT);
+        return 0;
     }   
-    else 
+    
+    
+    if (!is_extended)
     {
 
         if (scancode == 0x2A || scancode == 0x36) {
@@ -105,10 +106,12 @@ int keyboard_poll_char(char *out) {
             return 0;
         }
 
-        if (scancode & 0x80) {
-            return 0;
-        }
     }  
+    if (scancode & 0x80) {
+        is_extended = false;
+        return 0;
+    }
+
     char translated = translate_scancode(scancode);
     if (translated == 0) {
         return 0;
