@@ -37,7 +37,7 @@ static const char SHIFT_MAP[128] = {
     [0x39] = ' ',
 };
 
-static const unsigned char EXTENDED_MAP[128] = {
+static const unsigned char EXTENDED_MAP[128] = { // We use unsigned char because the values can be larger than 8 bit
     [0x48] = ARROW_KEY_UP,
     [0x50] = ARROW_KEY_DOWN,
     [0x4B] = ARROW_KEY_LEFT,
@@ -50,11 +50,11 @@ static char translate_scancode(uint8_t scancode) {
     if (is_extended)
     {
         is_extended = false;
-        return (scancode < 128) ? EXTENDED_MAP[scancode] : 0;    
+        return (scancode < 128) ? EXTENDED_MAP[scancode] : 0;
     }
     if (scancode >= 128) return 0;
 
-    const char *map = shift_active ? SHIFT_MAP : BASE_MAP; // Ternary operator LMAO
+    const char *map = shift_active ? SHIFT_MAP : BASE_MAP;
     return map[scancode];
 }
 
@@ -81,16 +81,12 @@ int keyboard_poll_char(char *out) {
     uint8_t scancode = keyboard_raw_read();
 
     if (scancode == 0xE0) {
-        //This means that it is an extended scancode, (e.g. 0xE0 0x4B, double read for left arrow key)
-        // so we basically read again with "Is extended"
         is_extended = true;
         return 0;
-    }   
-    
+    }
     
     if (!is_extended)
     {
-
         if (scancode == 0x2A || scancode == 0x36) {
             shift_active = true;
             return 0;
@@ -99,8 +95,8 @@ int keyboard_poll_char(char *out) {
             shift_active = false;
             return 0;
         }
+    }
 
-    }  
     if (scancode & 0x80) {
         is_extended = false;
         return 0;
