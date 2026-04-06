@@ -68,7 +68,7 @@ void keyboard_init(void) {
 
 char keyboard_raw_read(void)
 {
-    if (!(inb(KEYBOARD_STATUS_PORT) & KEYBOARD_STATUS_OUT_READY)) 
+    if (!(inb(KEYBOARD_STATUS_PORT) & KEYBOARD_STATUS_OUT_READY))
     {
         return 0;
     }
