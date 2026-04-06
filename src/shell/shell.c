@@ -86,16 +86,10 @@ void execute_command(char *command){
     {
         uint8_t cursor_value = string_to_hex(command + 7);
         change_cursor(cursor_value);
-    } else if (strncmp(command, "guess ", 6) == 0)
+    } else if (strcmp(command, "random") == 0)
     {
-        char *number = command + 6;
-        uint64_t random_number = random();
+        int random_number = random();
         print_string(random_number);
-        if (random_number == number){ // Still broken, I'll fix this when I have time
-            print_string("You won!"); // Please don't test this on bare metal right now
-        } else {
-            print_string("You lost!");
-        }
     }
     else {
         print_string(command);
