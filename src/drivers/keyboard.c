@@ -5,6 +5,7 @@
 #define KEYBOARD_STATUS_OUT_READY 0x01
 
 static bool shift_active = false;
+static bool is_extended = false;
 
 static const char BASE_MAP[128] = {
     [0x02] = '1', [0x03] = '2', [0x04] = '3', [0x05] = '4', [0x06] = '5',
@@ -36,7 +37,23 @@ static const char SHIFT_MAP[128] = {
     [0x39] = ' ',
 };
 
+static const unsigned char EXTENDED_MAP[128] = {
+    [0x48] = ARROW_KEY_UP,
+    [0x50] = ARROW_KEY_DOWN,
+    [0x4B] = ARROW_KEY_LEFT,
+    [0x4D] = ARROW_KEY_RIGHT,
+    [0x1C] = '\n', // Keypad Enter
+    [0x35] = '/',  // Keypad Divide
+};
+
 static char translate_scancode(uint8_t scancode) {
+    if (is_extended)
+    {
+        is_extended = false;
+        return (scancode < 128) ? EXTENDED_MAP[scancode] : 0;    
+    }
+    if (scancode >= 128) return 0;
+
     const char *map = shift_active ? SHIFT_MAP : BASE_MAP; // Ternary operator LMAO
     return map[scancode];
 }
@@ -49,27 +66,43 @@ void keyboard_init(void) {
     }
 }
 
-int keyboard_poll_char(char *out) {
-    if (!(inb(KEYBOARD_STATUS_PORT) & KEYBOARD_STATUS_OUT_READY)) {
+char keyboard_raw_read()
+{
+    if (!(inb(KEYBOARD_STATUS_PORT) & KEYBOARD_STATUS_OUT_READY)) 
+    {
         return 0;
     }
 
-    uint8_t scancode = inb(KEYBOARD_DATA_PORT);
+    return inb(KEYBOARD_DATA_PORT);
+}
+
+int keyboard_poll_char(char *out) {
+
+    uint8_t scancode = keyboard_raw_read();
 
     if (scancode == 0xE0) {
+        //This means that it is an extended scancode, (e.g. 0xE0 0x4B, double read for left arrow key)
+        // so we basically read again with "Is extended"
+        is_extended = true;
         return 0;
-    }
+    }   
+    
+    
+    if (!is_extended)
+    {
 
-    if (scancode == 0x2A || scancode == 0x36) {
-        shift_active = true;
-        return 0;
-    }
-    if (scancode == 0xAA || scancode == 0xB6) {
-        shift_active = false;
-        return 0;
-    }
+        if (scancode == 0x2A || scancode == 0x36) {
+            shift_active = true;
+            return 0;
+        }
+        if (scancode == 0xAA || scancode == 0xB6) {
+            shift_active = false;
+            return 0;
+        }
 
+    }  
     if (scancode & 0x80) {
+        is_extended = false;
         return 0;
     }
 
