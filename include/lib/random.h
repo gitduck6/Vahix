@@ -2,4 +2,4 @@
 
 #include <stdint.h>
 
-int random(void);
+int random(char * seed);

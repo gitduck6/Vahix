@@ -6,6 +6,7 @@
 #include "drivers/keyboard.h"
 #include "drivers/vga.h"
 #include "kernel/io.h"
+#include "lib/random.h"
 
 void execute_command(char *command);
 void shell(void);
