@@ -1,7 +1,5 @@
 #include "shell/shell.h"
 
-char last_random_number = 123;
-
 void execute_command(char *command){
     if (strcmp(command, "help") == 0)
     {
@@ -90,8 +88,8 @@ void execute_command(char *command){
         change_cursor(cursor_value);
     } else if (strcmp(command, "random") == 0)
     {
-        char random_number = random(&last_random_number);
-        print_hex((char)random_number);
+        int random_number = random();
+        print_hex(random_number);
     }
     else {
         print_string(command);
