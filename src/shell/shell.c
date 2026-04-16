@@ -88,7 +88,7 @@ void execute_command(char *command){
         change_cursor(cursor_value);
     } else if (strcmp(command, "random") == 0)
     {
-        int random_number = random();
+        uint32_t random_number = random();
         print_hex(random_number);
     }
     else {
