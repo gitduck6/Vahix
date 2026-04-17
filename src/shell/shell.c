@@ -89,7 +89,9 @@ void execute_command(char *command){
     } else if (strcmp(command, "random") == 0)
     {
         uint32_t random_number = random();
-        print_hex_byte(random_number);
+        char random_number_string[64];
+        itoa(random_number, random_number_string);
+        print_string(random_number_string);
     }
     else {
         print_string(command);
