@@ -89,7 +89,7 @@ void execute_command(char *command){
     } else if (strcmp(command, "random") == 0)
     {
         uint32_t random_number = random();
-        print_hex(random_number);
+        print_hex_byte(random_number);
     }
     else {
         print_string(command);
