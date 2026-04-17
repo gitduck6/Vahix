@@ -68,3 +68,35 @@ size_t strcspn(const char *s1, const char *s2)
     }
     return i;
 }
+
+void itoa(int n, char *str) {
+    int i = 0;
+
+    if (n == 0) {
+        str[i++] = '0';
+        str[i] = '\0';
+        return;
+    }
+
+    while (n > 0) {
+        int rem = n % 10;
+        str[i++] = rem + '0';
+        n = n / 10;
+    }
+
+    str[i] = '\0';
+
+    reverse(str, i);
+}
+
+void reverse(char *str, int length) {
+    int start = 0;
+    int end = length - 1;
+    while (start < end) {
+        char temp = str[start];
+        str[start] = str[end];
+        str[end] = temp;
+        start++;
+        end--;
+    }
+}

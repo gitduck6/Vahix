@@ -12,3 +12,5 @@ size_t strcspn(const char *s1, const char *s2);
 uint32_t string_to_hex(char *str);
 void print_hex_byte(uint8_t value);
 void print_hex(uint32_t value);
+void itoa(int n, char *str);
+void reverse(char *str, int length);
