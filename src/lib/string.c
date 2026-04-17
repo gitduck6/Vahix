@@ -42,20 +42,6 @@ uint32_t string_to_hex(char *str) {
     return val;
 }
 
-void print_hex_byte(uint8_t value) {
-    char *hex_chars = "0123456789ABCDEF";
-    print_character(hex_chars[(value >> 4) & 0x0F]);
-    print_character(hex_chars[value & 0x0F]);
-}
-
-void print_hex(uint32_t value) {
-    print_string("0x");
-    for (int i = 3; i >= 0; i--) {
-        uint8_t byte = (value >> (i * 8)) & 0xFF;
-        print_hex_byte(byte);
-    }
-}
-
 size_t strcspn(const char *s1, const char *s2)
 {
     size_t i;

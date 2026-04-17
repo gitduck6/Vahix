@@ -76,6 +76,20 @@ void print_string(const char *string) {
     }
 }
 
+void print_hex_byte(uint8_t value) {
+    char *hex_chars = "0123456789ABCDEF";
+    print_character(hex_chars[(value >> 4) & 0x0F]);
+    print_character(hex_chars[value & 0x0F]);
+}
+
+void print_hex(uint32_t value) {
+    print_string("0x");
+    for (int i = 3; i >= 0; i--) {
+        uint8_t byte = (value >> (i * 8)) & 0xFF;
+        print_hex_byte(byte);
+    }
+}
+
 void change_cursor(const char cursor)
 {
     char cursor_start, cursor_end;
