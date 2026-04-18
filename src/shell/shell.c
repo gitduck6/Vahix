@@ -3,7 +3,7 @@
 void execute_command(char *command){
     if (strcmp(command, "help") == 0)
     {
-        print_string("help\nclear\necho\nhalt\nreboot\ncpuid\ncolor\npeek\ndump\ntetost\ncursor\nrandom");
+        print_string("help\nclear\necho\nhalt\nreboot\ncpuid\ncolor\npeek\ndump\ntetost\ncursor\nrandom\nguess");
     }
     else if (strcmp(command, "clear") == 0)
     {
