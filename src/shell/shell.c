@@ -92,6 +92,19 @@ void execute_command(char *command){
         char random_number_string[64];
         itoa(random_number, random_number_string);
         print_string(random_number_string);
+    } else if (strncmp(command, "guess", 5) == 0)
+    {
+        char *guess = command + 6;
+        uint32_t random_number = random();
+        random_number = random_number % 11;
+        char random_number_string[8];
+        itoa(random_number, random_number_string);
+        if (strcmp(guess, random_number_string) == 0){
+            print_string("You were right!");
+        } else {
+            print_string("You were wrong!\nIt was ");
+            print_string(random_number_string);
+        }
     }
     else {
         print_string(command);
