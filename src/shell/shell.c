@@ -114,6 +114,10 @@ void execute_command(char *command){
     } else if (strcmp(command, "fetch") == 0) {
     
         uint8_t initial_color = get_color();
+        uint32_t cycles = get_seed_from_rdtsc();
+        char cycles_string[64];
+        itoa(cycles, cycles_string);
+
         set_color(0x01, 0x00);
         print_string("##@@           @@## Kernel: Vahix\n###@@         @@### Shell: Vahix shell\n@@@@##       ##@@@@ CPU: "); 
         print_string(cpuid()); print_string("\n @@@###     ###@@@  Color: ");
@@ -133,7 +137,9 @@ void execute_command(char *command){
         }
 
         print_string(color_name);
-        print_string("\n  ###@@     @@###\n   ##@@@   @@@##\n    ##@@@@@@@##\n      @@@@@@@");
+        print_string("\n  ###@@     @@###   Cycles: ");
+        print_string(cycles_string);
+        print_string("\n   ##@@@   @@@##\n    ##@@@@@@@##\n      @@@@@@@");
         set_color(initial_color, 0x00);
     } 
     else {
