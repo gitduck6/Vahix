@@ -11,3 +11,4 @@ size_t strlen(const char *s);
 uint32_t string_to_hex(char *str);
 void itoa(int n, char *str);
 void reverse(char *str, int length);
+int atoi(const char *nptr);
