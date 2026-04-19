@@ -10,3 +10,4 @@
 
 void execute_command(char *command);
 void shell(void);
+const char * cpuid(void);
