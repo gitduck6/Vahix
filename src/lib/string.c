@@ -74,6 +74,6 @@ void reverse(char *str, int length) {
     }
 }
 
-int atoi(const char *nptr){
+int atoi(const char *nptr){ // Atoi takes a constant string and turns it into an integer
     return 0;
 }
