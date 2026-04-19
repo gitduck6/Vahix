@@ -150,7 +150,7 @@ void execute_command(char *command){
 
 void shell(void)
 {
-    int running = 1; // I use 0 and 1 for false and true
+    bool running = true;
     char input_buffer[64];
     int index = 0;
     char c;
