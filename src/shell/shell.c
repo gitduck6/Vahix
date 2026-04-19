@@ -16,7 +16,7 @@ const char * cpuid(void){
 void execute_command(char *command){
     if (strcmp(command, "help") == 0)
     {
-        print_string("help\nclear\necho\nhalt\nreboot\ncpuid\ncolor\npeek\ndump\ntetost\ncursor\nrandom\nguess");
+        print_string("help\nclear\necho\nhalt\nreboot\ncpuid\ncolor\npeek\ndump\ntetost\ncursor\nrandom\nguess\nfetch");
     }
     else if (strcmp(command, "clear") == 0)
     {
@@ -111,7 +111,37 @@ void execute_command(char *command){
             print_string("You were wrong!\nIt was ");
             print_string(random_number_string);
         }
-    }
+    } else if (strcmp(command, "fetch") == 0) {
+    
+        uint8_t initial_color = get_color();
+        uint32_t cycles = get_seed_from_rdtsc();
+        char cycles_string[64];
+        itoa(cycles, cycles_string);
+
+        set_color(0x01, 0x00);
+        print_string("##@@           @@## Kernel: Vahix\n###@@         @@### Shell: Vahix shell\n@@@@##       ##@@@@ CPU: "); 
+        print_string(cpuid()); print_string("\n @@@###     ###@@@  Color: ");
+        
+        const char *color_name;
+
+        switch (initial_color){
+            case 0x00: color_name = "black"; break;
+            case 0x01: color_name = "blue"; break;
+            case 0x02: color_name = "green"; break;
+            case 0x03: color_name = "cyan"; break;
+            case 0x04: color_name = "red"; break;
+            case 0x05: color_name = "magenta"; break;
+            case 0x06: color_name = "brown"; break;
+            case 0x0F: color_name = "white"; break;
+            default: color_name = "unknown"; break;
+        }
+
+        print_string(color_name);
+        print_string("\n  ###@@     @@###   Cycles: ");
+        print_string(cycles_string);
+        print_string("\n   ##@@@   @@@##\n    ##@@@@@@@##\n      @@@@@@@");
+        set_color(initial_color, 0x00);
+    } 
     else {
         print_string(command);
         print_string(": command not found");
