@@ -1,5 +1,18 @@
 #include "shell/shell.h"
 
+const char * cpuid(void){
+    static uint32_t regs[4];
+
+    __asm__ volatile("cpuid"
+                     : "=a"(regs[3]), "=b"(regs[0]), "=d"(regs[1]), "=c"(regs[2])
+                     : "a"(0));
+
+    char *vendor = (char *)regs;
+    vendor[12] = '\0';
+
+    return vendor;
+}
+
 void execute_command(char *command){
     if (strcmp(command, "help") == 0)
     {
@@ -32,14 +45,7 @@ void execute_command(char *command){
     }
     else if (strcmp(command, "cpuid") == 0) 
     {
-        uint32_t regs[4];
-        __asm__ volatile("cpuid" : "=a"(regs[3]), "=b"(regs[0]), "=d"(regs[1]), "=c"(regs[2]) : "a"(0));
-
-        char *vendor = (char *)regs;
-
-        vendor[12] = '\0';
-
-        print_string(vendor);
+        print_string(cpuid());
     }
     else if (strncmp(command, "color", 5) == 0)
     {
