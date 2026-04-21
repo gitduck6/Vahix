@@ -144,10 +144,7 @@ void execute_command(char *command){
     } 
     else if (strncmp(command, "cowsay", 6) == 0)
     {
-        char *message = command + 6;
-
-        if (*message == ' ')
-            message++;
+        char *message = command + 7;
 
         print_string("< "); print_string(message); print_string(" >\n -------\n        \\   ^__^\n         \\  (oo)\\_______\n            (__)\\       )\\/\\\n                ||----w |\n                ||     ||\n");
     }
