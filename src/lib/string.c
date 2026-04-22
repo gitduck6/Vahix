@@ -1,4 +1,5 @@
 #include "lib/string.h"
+#include "lib/math.h"
 
 int strcmp(const char *s1, const char *s2) {
     while (*s1 && (*s1 == *s2)) {
@@ -74,6 +75,22 @@ void reverse(char *str, int length) {
     }
 }
 
+
 int atoi(const char *nptr){
-    return 0;
+
+    int value = 0;
+    int len;
+    for (len = 0;nptr[len] != '\0';len++);
+
+    for (int i = 0;i < len;i++)
+    {
+        if (('0' <= nptr[i]) && ('9' >= nptr[i]))
+        {
+            value = (value * 10) + (nptr[i] - '0');
+        }
+        else break;
+    }
+
+
+    return value;
 }
