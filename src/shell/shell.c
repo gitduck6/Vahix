@@ -15,7 +15,7 @@ const char *cpuid(void){
 
 void execute_command(char *command){
     if(strcmp(command, "help") == 0){
-        print_string("help\nclear\necho\nhalt\nreboot\ncpuid\ncolor\npeek\ndump\ntetost\ncursor\nrandom\nguess\nfetch\ncowsay");
+        print_string("help\nclear\necho\nhalt\nreboot\ncpuid\ncolor\npeek\ndump\ncursor\nrandom\nfetch");
     } else if(strcmp(command, "clear") == 0){
         clear();
     } else if(strncmp(command, "echo", 4) == 0){
@@ -60,11 +60,6 @@ void execute_command(char *command){
             print_character(' ');
             if(i == 7) print_string("| ");
         }
-    } else if(strcmp(command, "tetost") == 0){
-        uint8_t initial_color = get_color();
-        set_color(0x05, 0x00);
-        print_string("Tetost is a femboy!");
-        set_color(initial_color, 0x00);
     } else if(strncmp(command, "cursor ", 7) == 0){
         uint8_t cursor_value = string_to_hex(command + 7);
         change_cursor(cursor_value);
@@ -73,20 +68,6 @@ void execute_command(char *command){
         char random_number_string[64];
         itoa(random_number, random_number_string);
         print_string(random_number_string);
-    } else if(strncmp(command, "guess", 5) == 0){
-        char *guess = command + 6;
-        uint32_t random_number = random();
-        random_number = random_number % 11;
-
-        char random_number_string[8];
-        itoa(random_number, random_number_string);
-
-        if(strcmp(guess, random_number_string) == 0){
-            print_string("You were right!");
-        } else {
-            print_string("You were wrong!\nIt was ");
-            print_string(random_number_string);
-        }
     } else if(strcmp(command, "fetch") == 0){
         uint8_t initial_color = get_color();
         uint32_t cycles = get_seed_from_rdtsc();
@@ -119,15 +100,6 @@ void execute_command(char *command){
         print_string("\n   ##@@@   @@@##\n    ##@@@@@@@##\n      @@@@@@@");
 
         set_color(initial_color, 0x00);
-    } else if(strncmp(command, "cowsay", 6) == 0){
-        char *message = command + 7;
-
-        print_string("< ");
-        print_string(message);
-        print_string(" >\n -------\n        \\   ^__^\n         \\  (oo)\\_______\n            (__)\\       )\\/\\\n                ||----w |\n                ||     ||\n");
-    } else {
-        print_string(command);
-        print_string(": command not found");
     }
 }
 
