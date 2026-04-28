@@ -75,15 +75,7 @@ void reverse(char *str, int length) {
     }
 }
 
-/*
-*    the function is pretty simple, it just goes through the string,
-*    multiplies value by 10 then adds DIGIT to value,
-*    keeps doing this untill a null terminator
-*    ALSO if the character is NOT a digit(between '0' and '9') we break and return 0 just for safety
-*    if anyone in the future intends to change this just put something else instead of the break
-*/
 int atoi(const char *nptr){
-
     int value = 0;
 
     for (int i = 0;nptr[i] != '\0';i++)
