@@ -121,7 +121,7 @@ void execute_command(char *input) {
     
     if (*args == ' ') {
         *args = '\0'; 
-        args++;       
+        args++;
     }
 
     for (int i = 0; i < COMMAND_COUNT; i++) {
