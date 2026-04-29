@@ -1,18 +1,5 @@
 #include "shell/shell.h"
 
-const char *cpuid(void){
-    static uint32_t regs[4];
-
-    __asm__ volatile("cpuid"
-        : "=a"(regs[3]), "=b"(regs[0]), "=d"(regs[1]), "=c"(regs[2])
-        : "a"(0));
-
-    char *vendor = (char *)regs;
-    vendor[12] = '\0';
-
-    return vendor;
-}
-
 void cmd_help(char *args) {
     print_string("help\nclear\nhalt\nreboot\ncpuid\ncolor\npeek\ndump\ncursor\nrandom\n");
 }
@@ -36,7 +23,16 @@ void cmd_reboot(char *args) {
 }
 
 void cmd_cpuid(char *args) {
-    print_string(cpuid());
+    static uint32_t regs[4];
+
+    __asm__ volatile("cpuid"
+        : "=a"(regs[3]), "=b"(regs[0]), "=d"(regs[1]), "=c"(regs[2])
+        : "a"(0));
+
+    char *vendor = (char *)regs;
+    vendor[12] = '\0';
+
+    print_string(vendor);
 }
 
 void cmd_color(char *args) {
