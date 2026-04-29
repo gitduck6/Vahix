@@ -42,14 +42,14 @@ void cmd_cpuid(char *args) {
 void cmd_color(char *args) {
     if (!args || !*args) return;
 
-    if(strcmp(args, "black") == 0)   { set_color(0x00, 0x00); }
-    if(strcmp(args, "blue") == 0)    { set_color(0x01, 0x00); }
-    if(strcmp(args, "green") == 0)   { set_color(0x02, 0x00); }
-    if(strcmp(args, "cyan") == 0)    { set_color(0x03, 0x00); }
-    if(strcmp(args, "red") == 0)     { set_color(0x04, 0x00); }
-    if(strcmp(args, "magenta") == 0) { set_color(0x05, 0x00); }
-    if(strcmp(args, "brown") == 0)   { set_color(0x06, 0x00); }
-    if(strcmp(args, "white") == 0)   { set_color(0x0F, 0x00); }
+    if(strcmp(args, "black") == 0)        { set_color(0x00, 0x00); }
+    else if(strcmp(args, "blue") == 0)    { set_color(0x01, 0x00); }
+    else if(strcmp(args, "green") == 0)   { set_color(0x02, 0x00); }
+    else if(strcmp(args, "cyan") == 0)    { set_color(0x03, 0x00); }
+    else if(strcmp(args, "red") == 0)     { set_color(0x04, 0x00); }
+    else if(strcmp(args, "magenta") == 0) { set_color(0x05, 0x00); }
+    else if(strcmp(args, "brown") == 0)   { set_color(0x06, 0x00); }
+    else if(strcmp(args, "white") == 0)   { set_color(0x0F, 0x00); }
 }
 
 void cmd_peek(char *args) {
