@@ -14,7 +14,7 @@ const char *cpuid(void){
 }
 
 void cmd_help(char *args) {
-    print_string("help\nclear\necho\nhalt\nreboot\ncpuid\ncolor\npeek\ndump\ncursor\nrandom\nfetch\n");
+    print_string("help\nclear\nhalt\nreboot\ncpuid\ncolor\npeek\ndump\ncursor\nrandom\n");
 }
 
 void cmd_clear(char *args) {
