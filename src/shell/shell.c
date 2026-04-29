@@ -13,94 +13,126 @@ const char *cpuid(void){
     return vendor;
 }
 
-void execute_command(char *command){
-    if(strcmp(command, "help") == 0){
-        print_string("help\nclear\necho\nhalt\nreboot\ncpuid\ncolor\npeek\ndump\ncursor\nrandom\nfetch");
-    } else if(strcmp(command, "clear") == 0){
-        clear();
-    } else if(strncmp(command, "echo", 4) == 0){
-        if(strlen(command) > 4){
-            print_string(command + 5);
-        }
-    } else if(strcmp(command, "halt") == 0){
-        while(1){
-            __asm__ volatile("cli; hlt");
-        }
-    } else if(strcmp(command, "reboot") == 0){
-        uint8_t good = 0x02;
-        while(good & 0x02)
-            good = inb(0x64);
-        outb(0x64, 0xFE);
-    } else if(strcmp(command, "cpuid") == 0){
-        print_string(cpuid());
-    } else if(strncmp(command, "color", 5) == 0){
-        if(strlen(command) > 5){
-            char *color = command + 6;
+void cmd_help(char *args) {
+    print_string("help\nclear\necho\nhalt\nreboot\ncpuid\ncolor\npeek\ndump\ncursor\nrandom\nfetch\n");
+}
 
-            if(strcmp(color, "black") == 0){set_color(0x00, 0x00);}
-            if(strcmp(color, "blue") == 0){set_color(0x01, 0x00);}
-            if(strcmp(color, "green") == 0){set_color(0x02, 0x00);}
-            if(strcmp(color, "cyan") == 0){set_color(0x03, 0x00);}
-            if(strcmp(color, "red") == 0){set_color(0x04, 0x00);}
-            if(strcmp(color, "magenta") == 0){set_color(0x05, 0x00);}
-            if(strcmp(color, "brown") == 0){set_color(0x06, 0x00);}
-            if(strcmp(color, "white") == 0){set_color(0x0F, 0x00);}
-        }
-    } else if(strncmp(command, "peek ", 5) == 0){
-        uint32_t addr = string_to_hex(command + 5);
-        uint8_t *ptr = (uint8_t *)addr;
-        uint8_t value = *ptr;
-        print_hex(value);
-    } else if(strncmp(command, "dump ", 5) == 0){
-        uint32_t addr = string_to_hex(command + 5);
-        uint8_t *ptr = (uint8_t *)addr;
+void cmd_clear(char *args) {
+    clear();
+}
 
-        for(int i = 0; i < 16; i++){
-            print_hex_byte(ptr[i]);
-            print_character(' ');
-            if(i == 7) print_string("| ");
-        }
-    } else if(strncmp(command, "cursor ", 7) == 0){
-        uint8_t cursor_value = string_to_hex(command + 7);
-        change_cursor(cursor_value);
-    } else if(strcmp(command, "random") == 0){
-        uint32_t random_number = random();
-        char random_number_string[64];
-        itoa(random_number, random_number_string);
-        print_string(random_number_string);
-    } else if(strcmp(command, "fetch") == 0){
-        uint8_t initial_color = get_color();
-        uint32_t cycles = get_seed_from_rdtsc();
-
-        char cycles_string[64];
-        itoa(cycles, cycles_string);
-
-        set_color(0x01, 0x00);
-        print_string("##@@           @@## Kernel: Vahix\n###@@         @@### Shell: Vahix shell\n@@@@##       ##@@@@ CPU: ");
-        print_string(cpuid());
-        print_string("\n @@@###     ###@@@  Color: ");
-
-        const char *color_name;
-
-        switch(initial_color){
-            case 0x00: color_name = "black"; break;
-            case 0x01: color_name = "blue"; break;
-            case 0x02: color_name = "green"; break;
-            case 0x03: color_name = "cyan"; break;
-            case 0x04: color_name = "red"; break;
-            case 0x05: color_name = "magenta"; break;
-            case 0x06: color_name = "brown"; break;
-            case 0x0F: color_name = "white"; break;
-            default: color_name = "unknown"; break;
-        }
-
-        print_string(color_name);
-        print_string("\n  ###@@     @@###   Cycles: ");
-        print_string(cycles_string);
-        print_string("\n   ##@@@   @@@##\n    ##@@@@@@@##\n      @@@@@@@");
-
-        set_color(initial_color, 0x00);
+void cmd_halt(char *args) {
+    while(1) {
+        __asm__ volatile("cli; hlt");
     }
+}
+
+void cmd_reboot(char *args) {
+    uint8_t good = 0x02;
+    while(good & 0x02) {
+        good = inb(0x64);
+    }
+    outb(0x64, 0xFE);
+}
+
+void cmd_cpuid(char *args) {
+    print_string(cpuid());
+}
+
+void cmd_color(char *args) {
+    if (!args || !*args) return;
+
+    if(strcmp(args, "black") == 0)   { set_color(0x00, 0x00); }
+    if(strcmp(args, "blue") == 0)    { set_color(0x01, 0x00); }
+    if(strcmp(args, "green") == 0)   { set_color(0x02, 0x00); }
+    if(strcmp(args, "cyan") == 0)    { set_color(0x03, 0x00); }
+    if(strcmp(args, "red") == 0)     { set_color(0x04, 0x00); }
+    if(strcmp(args, "magenta") == 0) { set_color(0x05, 0x00); }
+    if(strcmp(args, "brown") == 0)   { set_color(0x06, 0x00); }
+    if(strcmp(args, "white") == 0)   { set_color(0x0F, 0x00); }
+}
+
+void cmd_peek(char *args) {
+    if (!args || !*args) return;
+    
+    uint32_t addr = string_to_hex(args);
+    uint8_t *ptr = (uint8_t *)addr;
+    uint8_t value = *ptr;
+    print_hex(value);
+}
+
+void cmd_dump(char *args) {
+    if (!args || !*args) return;
+
+    uint32_t addr = string_to_hex(args);
+    uint8_t *ptr = (uint8_t *)addr;
+
+    for(int i = 0; i < 16; i++){
+        print_hex_byte(ptr[i]);
+        print_character(' ');
+        if(i == 7) print_string("| ");
+    }
+}
+
+void cmd_cursor(char *args) {
+    if (!args || !*args) return;
+
+    uint8_t cursor_value = string_to_hex(args);
+    change_cursor(cursor_value);
+}
+
+void cmd_random(char *args) {
+    uint32_t random_number = random();
+    char random_number_string[64];
+    itoa(random_number, random_number_string);
+    print_string(random_number_string);
+}
+
+typedef void (*command_handler_t)(char *args);
+
+typedef struct {
+    const char *name;
+    command_handler_t handler;
+} shell_command_t;
+
+shell_command_t commands[] = {
+    {"help",   cmd_help},
+    {"clear",  cmd_clear},
+    {"halt",   cmd_halt},
+    {"reboot", cmd_reboot},
+    {"cpuid",  cmd_cpuid},
+    {"color",  cmd_color},
+    {"peek",   cmd_peek},
+    {"dump",   cmd_dump},
+    {"cursor", cmd_cursor},
+    {"random", cmd_random}
+};
+
+#define COMMAND_COUNT (sizeof(commands) / sizeof(shell_command_t))
+
+void execute_command(char *input) {
+    if (*input == '\0') return;
+
+    char *args = input;
+
+    while (*args != ' ' && *args != '\0') {
+        args++;
+    }
+    
+    if (*args == ' ') {
+        *args = '\0'; 
+        args++;       
+    }
+
+    for (int i = 0; i < COMMAND_COUNT; i++) {
+        if (strcmp(input, commands[i].name) == 0) {
+            commands[i].handler(args);
+            return;
+        }
+    }
+
+    print_string("Unknown command: ");
+    print_string(input);
 }
 
 void shell(void){
