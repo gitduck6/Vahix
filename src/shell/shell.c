@@ -1,7 +1,7 @@
 #include "shell/shell.h"
 
 void cmd_help(char *args) {
-    print_string("help\nclear\nhalt\nreboot\ncpuid\ncolor\npeek\ndump\ncursor\nrandom\n");
+    print_string("help\nclear\nhalt\nreboot\ncpuid\ncolor\npeek\ndump\ncursor\nrandom\npoke\n");
 }
 
 void cmd_clear(char *args) {
@@ -57,6 +57,31 @@ void cmd_peek(char *args) {
     print_hex(value);
 }
 
+void cmd_poke(char *args) {
+    if (!args || !*args) return;
+
+    char *addr_str = args;
+    char *val_str = NULL;
+
+    for (int i = 0; args[i] != '\0'; i++) {
+        if (args[i] == ' ') {
+            args[i] = '\0';
+            val_str = &args[i+1];
+            break;
+        }
+    }
+
+    if (val_str == NULL || *val_str == '\0') {
+        return;
+    }
+
+    uint32_t address = string_to_hex(addr_str);
+    uint8_t value = (uint8_t)string_to_hex(val_str);
+
+    uint8_t *ptr = (uint8_t *)address;
+    *ptr = value;
+}
+
 void cmd_dump(char *args) {
     if (!args || !*args) return;
 
@@ -101,7 +126,8 @@ shell_command_t commands[] = {
     {"peek",   cmd_peek},
     {"dump",   cmd_dump},
     {"cursor", cmd_cursor},
-    {"random", cmd_random}
+    {"random", cmd_random},
+    {"poke",   cmd_poke}
 };
 
 #define COMMAND_COUNT (sizeof(commands) / sizeof(shell_command_t))
